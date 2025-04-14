@@ -8,6 +8,8 @@ import { Button } from "@/components/ui/button";
 import { format, addDays, addMonths } from "date-fns";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import EventFormModal from "@/components/ui/event-form-modal";
+import { LanguageSwitcher } from "@/components/ui/language-switcher";
+import { useTranslation } from "react-i18next";
 
 export default function CalendarPage() {
   const { user } = useAuth();
@@ -105,6 +107,7 @@ export default function CalendarPage() {
             <Button variant="ghost" size="icon" className="w-8 h-8 rounded-full">
               <Search className="text-neutral-500" size={18} />
             </Button>
+            <LanguageSwitcher />
             <div className="hidden md:flex">
               <Avatar className="w-8 h-8 bg-primary text-white">
                 <AvatarFallback>{user?.fullName ? getInitials(user.fullName) : 'U'}</AvatarFallback>

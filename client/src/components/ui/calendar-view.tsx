@@ -11,12 +11,15 @@ import EventCard from "./event-card";
 import { useQuery } from "@tanstack/react-query";
 import { Event } from "@/lib/types";
 import { Skeleton } from "./skeleton";
+import EventFormModal from "./event-form-modal";
 
 type ViewMode = "day" | "week" | "month";
 
 export default function CalendarView() {
   const [viewMode, setViewMode] = useState<ViewMode>("day");
   const [currentDate, setCurrentDate] = useState(new Date());
+  const [showAddEvent, setShowAddEvent] = useState(false);
+  const [selectedPeriod, setSelectedPeriod] = useState<"morning" | "afternoon" | "night">("morning");
 
   // Calculate the start and end dates based on the view mode
   const getDateRange = () => {
@@ -116,6 +119,14 @@ export default function CalendarView() {
 
   return (
     <div className="flex-1 overflow-auto">
+      {/* Event Form Modal */}
+      <EventFormModal 
+        isOpen={showAddEvent} 
+        onClose={() => setShowAddEvent(false)} 
+        defaultPeriod={selectedPeriod}
+        defaultDate={format(currentDate, 'yyyy-MM-dd')}
+      />
+      
       {/* Calendar View Toggle */}
       <div className="sticky top-0 bg-white z-10 px-4 py-2 border-b border-neutral-200 flex justify-between items-center">
         <div className="flex space-x-2">
@@ -188,7 +199,13 @@ export default function CalendarView() {
                 <EventCard key={event.id} event={event} />
               ))
             ) : (
-              <div className="p-6 text-center text-neutral-400 text-sm">
+              <div 
+                className="p-6 text-center text-neutral-400 text-sm cursor-pointer hover:bg-neutral-50"
+                onClick={() => {
+                  setSelectedPeriod("morning");
+                  setShowAddEvent(true);
+                }}
+              >
                 <span className="ri-add-circle-line text-2xl mb-1 block"></span>
                 Click to add event
               </div>
@@ -212,7 +229,13 @@ export default function CalendarView() {
                 <EventCard key={event.id} event={event} />
               ))
             ) : (
-              <div className="p-6 text-center text-neutral-400 text-sm">
+              <div 
+                className="p-6 text-center text-neutral-400 text-sm cursor-pointer hover:bg-neutral-50"
+                onClick={() => {
+                  setSelectedPeriod("afternoon");
+                  setShowAddEvent(true);
+                }}
+              >
                 <span className="ri-add-circle-line text-2xl mb-1 block"></span>
                 Click to add event
               </div>
@@ -236,7 +259,13 @@ export default function CalendarView() {
                 <EventCard key={event.id} event={event} />
               ))
             ) : (
-              <div className="p-6 text-center text-neutral-400 text-sm">
+              <div 
+                className="p-6 text-center text-neutral-400 text-sm cursor-pointer hover:bg-neutral-50"
+                onClick={() => {
+                  setSelectedPeriod("night");
+                  setShowAddEvent(true);
+                }}
+              >
                 <span className="ri-add-circle-line text-2xl mb-1 block"></span>
                 Click to add event
               </div>
