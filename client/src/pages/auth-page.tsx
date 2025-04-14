@@ -165,9 +165,9 @@ export default function AuthPage() {
                       name="username"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Username</FormLabel>
+                          <FormLabel>{t("auth.username")}</FormLabel>
                           <FormControl>
-                            <Input placeholder="Choose a username" {...field} />
+                            <Input placeholder={`${t("auth.username")}...`} {...field} />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -178,9 +178,9 @@ export default function AuthPage() {
                       name="email"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Email</FormLabel>
+                          <FormLabel>{t("auth.email")}</FormLabel>
                           <FormControl>
-                            <Input type="email" placeholder="Enter your email" {...field} />
+                            <Input type="email" placeholder={`${t("auth.email")}...`} {...field} />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -204,9 +204,9 @@ export default function AuthPage() {
                       name="password"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Password</FormLabel>
+                          <FormLabel>{t("auth.password")}</FormLabel>
                           <FormControl>
-                            <Input type="password" placeholder="Create a password" {...field} />
+                            <Input type="password" placeholder={`${t("auth.password")}...`} {...field} />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -217,9 +217,9 @@ export default function AuthPage() {
                       name="confirmPassword"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Confirm Password</FormLabel>
+                          <FormLabel>{t("auth.confirmPassword")}</FormLabel>
                           <FormControl>
-                            <Input type="password" placeholder="Confirm your password" {...field} />
+                            <Input type="password" placeholder={`${t("auth.confirmPassword")}...`} {...field} />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -233,9 +233,9 @@ export default function AuthPage() {
                       {registerMutation.isPending ? (
                         <>
                           <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                          Creating account...
+                          {t("common.loading")}
                         </>
-                      ) : "Create Account"}
+                      ) : t("auth.createAccount")}
                     </Button>
                   </form>
                 </Form>
@@ -260,15 +260,15 @@ export default function AuthPage() {
       {/* Right side: Hero Banner */}
       <div className="hidden md:flex md:flex-1 bg-primary text-white">
         <div className="max-w-lg mx-auto flex flex-col justify-center p-8">
-          <h1 className="text-4xl font-heading font-bold mb-6">Simplify your shared schedules</h1>
+          <h1 className="text-4xl font-heading font-bold mb-6">{t("app.tagline")}</h1>
           <div className="space-y-6">
             <div className="flex items-start">
               <div className="bg-white/20 p-2 rounded-full mr-4">
                 <i className="ri-calendar-check-line text-2xl"></i>
               </div>
               <div>
-                <h3 className="font-medium text-xl mb-1">Period-Based Organization</h3>
-                <p className="text-white/80">See your day divided into morning, afternoon, and night periods for better clarity.</p>
+                <h3 className="font-medium text-xl mb-1">{t("calendar.periods.morning")} / {t("calendar.periods.afternoon")} / {t("calendar.periods.night")}</h3>
+                <p className="text-white/80">{t("calendar.periods.morning")}, {t("calendar.periods.afternoon")}, {t("calendar.periods.night")}</p>
               </div>
             </div>
             
@@ -277,8 +277,8 @@ export default function AuthPage() {
                 <i className="ri-team-line text-2xl"></i>
               </div>
               <div>
-                <h3 className="font-medium text-xl mb-1">Partner Collaboration</h3>
-                <p className="text-white/80">Share your calendar with your partner and collaborate on events easily.</p>
+                <h3 className="font-medium text-xl mb-1">{t("partners.title")}</h3>
+                <p className="text-white/80">{t("partners.invite")}</p>
               </div>
             </div>
             
@@ -287,8 +287,8 @@ export default function AuthPage() {
                 <i className="ri-discuss-line text-2xl"></i>
               </div>
               <div>
-                <h3 className="font-medium text-xl mb-1">Interactive Events</h3>
-                <p className="text-white/80">Comment, react, and discuss directly within events for seamless coordination.</p>
+                <h3 className="font-medium text-xl mb-1">{t("comments.add")}</h3>
+                <p className="text-white/80">{t("comments.placeholder")}</p>
               </div>
             </div>
           </div>
