@@ -11,6 +11,8 @@ import EventFormModal from "@/components/ui/event-form-modal";
 import { LanguageSwitcher } from "@/components/ui/language-switcher";
 import { useTranslation } from "react-i18next";
 
+const { t } = useTranslation();
+
 export default function CalendarPage() {
   const { user } = useAuth();
   const [currentDate, setCurrentDate] = useState(new Date());
