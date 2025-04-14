@@ -1,3 +1,4 @@
+
 {
   "app": {
     "name": "Calendário Raft",
@@ -11,7 +12,7 @@
     "email": "Email",
     "password": "Senha",
     "confirmPassword": "Confirmar Senha",
-    "loginToAccount": "Entrar na sua conta",
+    "loginToAccount": "Entre na sua conta",
     "createAccount": "Criar uma nova conta",
     "createNewAccount": "Não tem uma conta?",
     "alreadyHaveAccount": "Já tem uma conta?",
@@ -38,7 +39,7 @@
       "title": "Tema",
       "description": "Personalize a aparência do aplicativo.",
       "darkMode": "Modo Escuro",
-      "darkModeDescription": "Alternar entre o modo claro e escuro."
+      "darkModeDescription": "Alternar entre modo claro e escuro."
     },
     "notifications": {
       "title": "Notificações",
@@ -46,7 +47,7 @@
       "events": "Notificações de Eventos",
       "eventsDescription": "Receba notificações sobre seus eventos.",
       "partners": "Notificações de Parceiros",
-      "partnersDescription": "Receba atualizações quando parceiros te enviarem convites ou aceitarem suas solicitações.",
+      "partnersDescription": "Receba atualizações quando parceiros enviarem convites ou aceitarem suas solicitações.",
       "comments": "Notificações de Comentários",
       "commentsDescription": "Seja notificado quando alguém comentar em seus eventos."
     }
