@@ -10,7 +10,7 @@ import { Switch } from "@/components/ui/switch";
 import { Settings, LogOut, Globe, Bell, Moon, Sun, PaintBucket } from "lucide-react";
 
 export default function SettingsPage() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { user, logoutMutation } = useAuth();
 
   const handleLogout = () => {

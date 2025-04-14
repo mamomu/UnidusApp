@@ -1,7 +1,8 @@
 import { useLocation, Link } from "wouter";
-import { CalendarDays, CheckSquare, Users, User, Plus } from "lucide-react";
+import { CalendarDays, CheckSquare, Users, Settings, Plus } from "lucide-react";
 import { useState } from "react";
 import EventFormModal from "./event-form-modal";
+import { useTranslation } from "react-i18next";
 
 export default function MobileNav() {
   const [location] = useLocation();
@@ -41,10 +42,10 @@ export default function MobileNav() {
           </a>
         </Link>
         
-        <Link href="/profile">
-          <a className={`flex flex-col items-center pt-1 pb-0.5 ${location === '/profile' ? 'text-primary' : 'text-neutral-500'}`}>
-            <User className="text-xl" size={20} />
-            <span className="text-xs mt-0.5">Profile</span>
+        <Link href="/settings">
+          <a className={`flex flex-col items-center pt-1 pb-0.5 ${location === '/settings' ? 'text-primary' : 'text-neutral-500'}`}>
+            <Settings className="text-xl" size={20} />
+            <span className="text-xs mt-0.5">Settings</span>
           </a>
         </Link>
       </div>
