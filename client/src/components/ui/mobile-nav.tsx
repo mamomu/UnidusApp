@@ -15,14 +15,14 @@ export default function MobileNav() {
         <Link href="/calendar">
           <a className={`flex flex-col items-center pt-1 pb-0.5 ${location === '/calendar' ? 'text-primary' : 'text-neutral-500'}`}>
             <CalendarDays className="text-xl" size={20} />
-            <span className="text-xs mt-0.5">Calendar</span>
+            <span className="text-xs mt-0.5">{t('calendar')}</span>
           </a>
         </Link>
         
         <Link href="/tasks">
           <a className={`flex flex-col items-center pt-1 pb-0.5 ${location === '/tasks' ? 'text-primary' : 'text-neutral-500'}`}>
             <CheckSquare className="text-xl" size={20} />
-            <span className="text-xs mt-0.5">Tasks</span>
+            <span className="text-xs mt-0.5">{t('tasks')}</span>
           </a>
         </Link>
         
@@ -33,20 +33,20 @@ export default function MobileNav() {
           >
             <Plus className="text-xl" size={24} />
           </button>
-          <span className="text-xs mt-0.5 text-neutral-500">Add</span>
+          <span className="text-xs mt-0.5 text-neutral-500">{t('add')}</span>
         </div>
         
         <Link href="/partners">
           <a className={`flex flex-col items-center pt-1 pb-0.5 ${location === '/partners' ? 'text-primary' : 'text-neutral-500'}`}>
             <Users className="text-xl" size={20} />
-            <span className="text-xs mt-0.5">Partners</span>
+            <span className="text-xs mt-0.5">{t('partners')}</span>
           </a>
         </Link>
         
         <Link href="/settings">
           <a className={`flex flex-col items-center pt-1 pb-0.5 ${location === '/settings' ? 'text-primary' : 'text-neutral-500'}`}>
             <Settings className="text-xl" size={20} />
-            <span className="text-xs mt-0.5">Settings</span>
+            <span className="text-xs mt-0.5">{t('settings')}</span>
           </a>
         </Link>
       </div>

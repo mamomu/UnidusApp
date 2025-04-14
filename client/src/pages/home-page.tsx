@@ -11,12 +11,14 @@ import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import OnboardingModal from "@/components/ui/onboarding-modal";
 import EventFormModal from "@/components/ui/event-form-modal";
+import { useTranslation } from "react-i18next";
 
 export default function HomePage() {
   const { user } = useAuth();
   const [currentDate, setCurrentDate] = useState(new Date());
   const [showOnboarding, setShowOnboarding] = useState(false);
   const [showAddEvent, setShowAddEvent] = useState(false);
+  const { t } = useTranslation();
   
   // Fetch user's special events to check for countdowns
   const { data: specialEvents } = useQuery({
@@ -116,7 +118,7 @@ export default function HomePage() {
               className="px-3 py-1.5 text-sm text-primary hover:bg-blue-50"
               onClick={handleToday}
             >
-              Today
+              {t('today')}
             </Button>
           </div>
           

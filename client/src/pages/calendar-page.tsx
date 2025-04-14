@@ -88,7 +88,7 @@ export default function CalendarPage() {
               className="px-3 py-1.5 text-sm text-primary hover:bg-blue-50"
               onClick={handleToday}
             >
-              Today
+              {t('today')}
             </Button>
           </div>
           
@@ -126,7 +126,7 @@ export default function CalendarPage() {
                 className="px-3 py-1.5 text-sm rounded-md h-auto"
                 onClick={() => setViewMode('day')}
               >
-                Day
+                {t('day')}
               </Button>
               <Button 
                 variant={viewMode === 'week' ? 'default' : 'ghost'} 
