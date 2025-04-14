@@ -7,6 +7,7 @@ import { useTranslation } from "react-i18next";
 export default function MobileNav() {
   const [location] = useLocation();
   const [showAddEvent, setShowAddEvent] = useState(false);
+  const { t } = useTranslation();
 
   return (
     <>

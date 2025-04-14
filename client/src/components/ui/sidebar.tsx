@@ -3,10 +3,12 @@ import { Link, useLocation } from "wouter";
 import { CalendarDays, CheckSquare, Users, Settings, LogOut } from "lucide-react";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
+import { useTranslation } from "react-i18next";
 
 export default function Sidebar() {
   const { user, logoutMutation } = useAuth();
   const [location] = useLocation();
+  const { t } = useTranslation();
 
   const handleLogout = () => {
     logoutMutation.mutate();
@@ -35,7 +37,7 @@ export default function Sidebar() {
             <Link href="/calendar">
               <a className={`flex items-center p-2 rounded-lg ${location === '/calendar' ? 'text-primary bg-blue-50' : 'text-neutral-500 hover:bg-neutral-100'} font-medium`}>
                 <CalendarDays className="mr-3 text-lg" size={20} />
-                Calendar
+                {t('calendar')}
               </a>
             </Link>
           </li>
@@ -43,7 +45,7 @@ export default function Sidebar() {
             <Link href="/tasks">
               <a className={`flex items-center p-2 rounded-lg ${location === '/tasks' ? 'text-primary bg-blue-50' : 'text-neutral-500 hover:bg-neutral-100'} font-medium`}>
                 <CheckSquare className="mr-3 text-lg" size={20} />
-                Tasks
+                {t('tasks')}
               </a>
             </Link>
           </li>
@@ -51,7 +53,7 @@ export default function Sidebar() {
             <Link href="/partners">
               <a className={`flex items-center p-2 rounded-lg ${location === '/partners' ? 'text-primary bg-blue-50' : 'text-neutral-500 hover:bg-neutral-100'} font-medium`}>
                 <Users className="mr-3 text-lg" size={20} />
-                Partners
+                {t('partners')}
               </a>
             </Link>
           </li>
@@ -59,7 +61,7 @@ export default function Sidebar() {
             <Link href="/settings">
               <a className={`flex items-center p-2 rounded-lg ${location === '/settings' ? 'text-primary bg-blue-50' : 'text-neutral-500 hover:bg-neutral-100'} font-medium`}>
                 <Settings className="mr-3 text-lg" size={20} />
-                Settings
+                {t('settings')}
               </a>
             </Link>
           </li>
