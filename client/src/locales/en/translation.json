@@ -17,6 +17,40 @@
     "alreadyHaveAccount": "Already have an account?",
     "logout": "Log out"
   },
+  "settings": {
+    "title": "Settings",
+    "description": "Manage your account settings and preferences.",
+    "tabs": {
+      "general": "General",
+      "appearance": "Appearance",
+      "notifications": "Notifications"
+    },
+    "language": {
+      "title": "Language",
+      "description": "Select your preferred language for the application interface.",
+      "select": "Select language"
+    },
+    "account": {
+      "title": "Account Information",
+      "description": "View and manage your account details."
+    },
+    "theme": {
+      "title": "Theme",
+      "description": "Customize the appearance of the application.",
+      "darkMode": "Dark Mode",
+      "darkModeDescription": "Switch between light and dark mode."
+    },
+    "notifications": {
+      "title": "Notifications",
+      "description": "Configure your notification preferences.",
+      "events": "Event Notifications",
+      "eventsDescription": "Receive notifications about your events.",
+      "partners": "Partner Notifications",
+      "partnersDescription": "Get updates when partners send you invites or accept your requests.",
+      "comments": "Comment Notifications",
+      "commentsDescription": "Be notified when someone comments on your events."
+    }
+  },
   "calendar": {
     "today": "Today",
     "day": "Day",
