@@ -4,6 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { useAuth } from "@/hooks/use-auth";
+import { useTranslation } from "react-i18next";
 import { 
   Form,
   FormControl,
@@ -18,30 +19,41 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Loader2 } from "lucide-react";
 
-// Login form schema
-const loginSchema = z.object({
-  username: z.string().min(1, "Username is required"),
-  password: z.string().min(1, "Password is required"),
-});
+// Define types before using them
+type LoginValues = {
+  username: string;
+  password: string;
+};
 
-// Registration form schema
-const registerSchema = z.object({
-  username: z.string().min(3, "Username must be at least 3 characters"),
-  email: z.string().email("Must be a valid email address"),
-  fullName: z.string().min(2, "Full name must be at least 2 characters"),
-  password: z.string().min(6, "Password must be at least 6 characters"),
-  confirmPassword: z.string().min(6, "Confirm password is required"),
-}).refine((data) => data.password === data.confirmPassword, {
-  message: "Passwords do not match",
-  path: ["confirmPassword"],
-});
-
-type LoginValues = z.infer<typeof loginSchema>;
-type RegisterValues = z.infer<typeof registerSchema>;
+type RegisterValues = {
+  username: string;
+  email: string;
+  fullName: string;
+  password: string;
+  confirmPassword: string;
+};
 
 export default function AuthPage() {
   const { user, loginMutation, registerMutation } = useAuth();
   const [activeTab, setActiveTab] = useState<"login" | "register">("login");
+  const { t } = useTranslation();
+
+  // Create schemas with translations
+  const loginSchema = z.object({
+    username: z.string().min(1, t("auth.username") + " " + t("common.error")),
+    password: z.string().min(1, t("auth.password") + " " + t("common.error")),
+  });
+
+  const registerSchema = z.object({
+    username: z.string().min(3, t("auth.username") + " " + t("common.error")),
+    email: z.string().email("Must be a valid email address"),
+    fullName: z.string().min(2, "Full name must be at least 2 characters"),
+    password: z.string().min(6, t("auth.password") + " " + t("common.error")),
+    confirmPassword: z.string().min(6, t("auth.confirmPassword") + " " + t("common.error")),
+  }).refine((data) => data.password === data.confirmPassword, {
+    message: "Passwords do not match",
+    path: ["confirmPassword"],
+  });
 
   // Login form
   const loginForm = useForm<LoginValues>({
@@ -88,16 +100,16 @@ export default function AuthPage() {
           <CardHeader>
             <div className="text-center mb-4">
               <h1 className="text-3xl font-heading font-bold text-primary flex items-center justify-center">
-                <i className="ri-calendar-line mr-2"></i> Raft
+                <i className="ri-calendar-line mr-2"></i> {t("app.name")}
               </h1>
-              <CardDescription>Collaborative calendar for shared schedules</CardDescription>
+              <CardDescription>{t("app.tagline")}</CardDescription>
             </div>
           </CardHeader>
           <CardContent>
             <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as "login" | "register")}>
               <TabsList className="grid w-full grid-cols-2 mb-6">
-                <TabsTrigger value="login">Login</TabsTrigger>
-                <TabsTrigger value="register">Register</TabsTrigger>
+                <TabsTrigger value="login">{t("auth.login")}</TabsTrigger>
+                <TabsTrigger value="register">{t("auth.register")}</TabsTrigger>
               </TabsList>
               
               <TabsContent value="login">
@@ -108,9 +120,9 @@ export default function AuthPage() {
                       name="username"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Username</FormLabel>
+                          <FormLabel>{t("auth.username")}</FormLabel>
                           <FormControl>
-                            <Input placeholder="Enter your username" {...field} />
+                            <Input placeholder={`${t("auth.username")}...`} {...field} />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -121,9 +133,9 @@ export default function AuthPage() {
                       name="password"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Password</FormLabel>
+                          <FormLabel>{t("auth.password")}</FormLabel>
                           <FormControl>
-                            <Input type="password" placeholder="Enter your password" {...field} />
+                            <Input type="password" placeholder={`${t("auth.password")}...`} {...field} />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -137,9 +149,9 @@ export default function AuthPage() {
                       {loginMutation.isPending ? (
                         <>
                           <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                          Logging in...
+                          {t("common.loading")}
                         </>
-                      ) : "Login"}
+                      ) : t("auth.login")}
                     </Button>
                   </form>
                 </Form>
@@ -232,13 +244,13 @@ export default function AuthPage() {
           </CardContent>
           <CardFooter className="flex justify-center">
             <span className="text-sm text-neutral-500">
-              {activeTab === "login" ? "Don't have an account? " : "Already have an account? "}
+              {activeTab === "login" ? t("auth.createNewAccount") : t("auth.alreadyHaveAccount")}
               <Button 
                 variant="link" 
                 className="p-0 h-auto text-primary" 
                 onClick={() => setActiveTab(activeTab === "login" ? "register" : "login")}
               >
-                {activeTab === "login" ? "Register" : "Login"}
+                {activeTab === "login" ? t("auth.register") : t("auth.login")}
               </Button>
             </span>
           </CardFooter>

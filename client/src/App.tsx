@@ -9,6 +9,7 @@ import HomePage from "@/pages/home-page";
 import CalendarPage from "@/pages/calendar-page";
 import PartnersPage from "@/pages/partners-page";
 import { ProtectedRoute } from "./lib/protected-route";
+import { LanguageSwitcher } from "@/components/ui/language-switcher";
 
 function Router() {
   return (
@@ -26,6 +27,9 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
+        <div className="fixed top-4 right-4 z-50">
+          <LanguageSwitcher />
+        </div>
         <Router />
         <Toaster />
       </AuthProvider>
