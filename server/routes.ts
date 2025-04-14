@@ -71,7 +71,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.post("/api/events", isAuthenticated, async (req, res) => {
     try {
       const userId = req.user!.id;
-      const eventData = { ...req.body, ownerId: userId };
+      // Format the date to YYYY-MM-DD
+      const eventData = { 
+        ...req.body, 
+        ownerId: userId,
+        date: new Date(req.body.date).toISOString().split('T')[0]
+      };
       
       // Validate event data
       const validatedData = insertEventSchema.parse(eventData);
