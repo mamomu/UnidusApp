@@ -156,10 +156,16 @@ export default function EventFormModal({ isOpen, onClose, editEvent }: EventForm
   });
 
   const onSubmit = (values: EventFormValues) => {
+    // Ensure date is in YYYY-MM-DD format
+    const formattedValues = {
+      ...values,
+      date: new Date(values.date).toISOString().split('T')[0]
+    };
+    
     if (editEvent) {
-      updateEventMutation.mutate(values);
+      updateEventMutation.mutate(formattedValues);
     } else {
-      createEventMutation.mutate(values);
+      createEventMutation.mutate(formattedValues);
     }
   };
 
