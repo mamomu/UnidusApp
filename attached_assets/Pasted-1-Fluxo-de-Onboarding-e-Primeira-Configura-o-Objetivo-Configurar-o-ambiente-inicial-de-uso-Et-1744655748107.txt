@@ -1,0 +1,126 @@
+1. 📲 Fluxo de Onboarding e Primeira Configuração
+Objetivo: Configurar o ambiente inicial de uso.
+Etapas:
+1. Abertura do app pela primeira vez
+2. Cadastro/Login
+    * Opções: Apple ID, e-mail ou número de telefone.
+    * Autenticação segura (Face ID, Touch ID ou código SMS).
+3. Escolha do idioma e região
+    * Sincroniza o calendário com o fuso local.
+4. Importar calendários existentes
+    * Conexões: Apple Calendar (nativo), Google Calendar, Outlook.
+    * Permissões para ler eventos e mostrar dentro do Raft.
+5. Convidar parceiro (essência do app)
+    * Pode ser um cônjuge, amigo ou familiar.
+    * Envio de convite por:
+        * SMS
+        * E-mail
+        * Link direto
+        * QR Code
+    * Status: pendente até aceitação.
+6. Configurar quais eventos compartilhar
+    * Todos os eventos
+    * Apenas eventos criados dentro do Raft
+    * Apenas alguns calendários
+    * Permissões: visualizar ou editar
+
+2. 🗓️ Criação de Eventos com Recorrência e Compartilhamento Direto
+Objetivo: Criar um evento personalizado e compartilhável, com ou sem recorrência.
+Etapas:
+1. Toque em “+ Criar Evento”
+    * Abre modal com formulário detalhado.
+2. Preencher os detalhes do evento:
+    * Nome do evento
+    * Data e horário
+    * Definição do período do dia:
+        * Manhã (ex.: 6h–12h)
+        * Tarde (ex.: 12h–18h)
+        * Noite (ex.: 18h–00h)
+    * Local (com integração ao Maps)
+3. Recorrência (Repetition):
+    * Frequência:
+        * Diária
+        * Semanal
+        * Mensal
+        * Personalizada (ex: a cada 2 semanas, toda 1ª segunda-feira)
+    * Data final ou duração da repetição
+    * Regras de exceção (pular feriados, exceções manuais)
+4. Adicionar Emojis/GIFs/Imagens
+    * Elemento visual do evento (facilita na visualização por blocos)
+5. Compartilhamento
+    * Selecionar participantes:
+        * Parceiro(a) (conectado)
+        * Outros amigos/familiares adicionados
+    * Definir permissão:
+        * “Pode visualizar”
+        * “Pode editar”
+    * Comentário opcional ao enviar convite.
+6. Salvar
+    * Participantes recebem notificação push e e-mail (se ativado).
+    * Evento aparece automaticamente no calendário do parceiro.
+
+3. 🔍 Visualização de Calendário: Por Períodos (Manhã, Tarde, Noite)
+Objetivo: Oferecer clareza e organização visual por faixas do dia.
+Etapas:
+1. Tela principal do calendário
+    * Layout com colunas ou blocos separados:
+        * Manhã (ícone ☀️)
+        * Tarde (ícone 🌤)
+        * Noite (ícone 🌙)
+2. Cada evento aparece com seu ícone, cor e participantes
+    * Exemplo:
+        * “Reunião com terapeuta” (10h, emoji de 💬)
+        * “Compras com Matheus” (15h, ícone 🛒)
+3. Modo de visualização:
+    * Dia / Semana / Mês
+    * “Hoje” destacado com contagem regressiva de eventos importantes
+    * Eventos com imagem/GIF aparecem em destaque
+4. Toque no evento abre popup flutuante
+    * Visualizar detalhes
+    * Curtir (❤️)
+    * Comentar
+    * Acessar chat integrado
+
+4. 💬 Comunicação Integrada nos Eventos
+Objetivo: Facilitar a conversa sobre cada evento sem sair do app.
+Etapas:
+1. Entrar no evento
+2. Área de comentários/chat
+    * Mensagens de texto, emojis, fotos
+    * Discussões podem ser aninhadas
+    * Notificações para cada nova interação
+3. Reações rápidas
+    * Curtir, “amei”, risada, etc.
+    * Mostra quem reagiu
+
+5. ⏰ Contagem Regressiva para Eventos Especiais
+Objetivo: Aumentar o envolvimento emocional com eventos relevantes.
+Etapas:
+1. Marcar evento como “especial”
+    * Exemplo: “Aniversário de casamento”
+2. Contagem regressiva automática
+    * Exibição em destaque no topo do app
+    * Widget opcional com contador
+3. Compartilhar contador com parceiro
+    * Via mensagem no app
+    * Ou gerando imagem exportável
+
+6. 📤 Compartilhamento Rápido com o Parceiro
+Objetivo: Adicionar eventos ao calendário do parceiro com um toque.
+Etapas:
+1. Criar evento ou selecionar um já existente
+2. Toque em “Compartilhar com [nome do parceiro]”
+3. Escolher se o parceiro pode:
+    * Apenas visualizar
+    * Editar (data, hora, participantes)
+4. Envio instantâneo
+    * Notificação push para o parceiro
+    * Aparece no calendário dele com distinção visual (ex: cor diferente)
+
+7. 🔄 Sincronização e Backup
+Objetivo: Garantir continuidade e integridade dos dados.
+Etapas:
+1. Sincronização automática com iCloud
+    * Dados salvos na nuvem
+2. Restauração em novos dispositivos
+    * Ao fazer login, todos os eventos e conversas são recuperados.
