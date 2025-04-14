@@ -1,0 +1,103 @@
+{
+  "app": {
+    "name": "Raft Calendar",
+    "tagline": "A collaborative calendar for you and your partners",
+    "lang": "Language"
+  },
+  "auth": {
+    "login": "Log in",
+    "register": "Register",
+    "username": "Username",
+    "email": "Email",
+    "password": "Password",
+    "confirmPassword": "Confirm Password",
+    "loginToAccount": "Login to your account",
+    "createAccount": "Create a new account",
+    "createNewAccount": "Don't have an account?",
+    "alreadyHaveAccount": "Already have an account?",
+    "logout": "Log out"
+  },
+  "calendar": {
+    "today": "Today",
+    "day": "Day",
+    "week": "Week",
+    "month": "Month",
+    "addEvent": "Add Event",
+    "periods": {
+      "morning": "Morning",
+      "afternoon": "Afternoon",
+      "night": "Night"
+    },
+    "event": {
+      "title": "Title",
+      "date": "Date",
+      "startTime": "Start Time",
+      "endTime": "End Time",
+      "period": "Period",
+      "location": "Location",
+      "emoji": "Emoji",
+      "privacy": "Privacy",
+      "recurrence": "Recurrence",
+      "recurrenceEndDate": "Recurrence End Date",
+      "isSpecial": "Special Event",
+      "participants": "Participants",
+      "save": "Save Event",
+      "cancel": "Cancel",
+      "edit": "Edit",
+      "delete": "Delete",
+      "confirm": "Confirm",
+      "privacyLevels": {
+        "private": "Private (only me)",
+        "partner": "Partner (me and my partners)",
+        "public": "Public (anyone with link)"
+      },
+      "recurrenceTypes": {
+        "none": "None",
+        "daily": "Daily",
+        "weekly": "Weekly",
+        "monthly": "Monthly",
+        "custom": "Custom"
+      }
+    }
+  },
+  "partners": {
+    "title": "Partners",
+    "invite": "Invite Partner",
+    "requests": "Partner Requests",
+    "list": "My Partners",
+    "invite_form": {
+      "email": "Partner Email",
+      "shareAll": "Share all events",
+      "shareRaftOnly": "Share only Raft events",
+      "send": "Send Invite",
+      "cancel": "Cancel"
+    },
+    "status": {
+      "pending": "Pending",
+      "accepted": "Accepted",
+      "rejected": "Rejected"
+    },
+    "actions": {
+      "accept": "Accept",
+      "reject": "Reject",
+      "remove": "Remove Partner"
+    }
+  },
+  "comments": {
+    "add": "Add Comment",
+    "reply": "Reply",
+    "placeholder": "Write a comment...",
+    "submit": "Submit"
+  },
+  "common": {
+    "loading": "Loading...",
+    "save": "Save",
+    "cancel": "Cancel",
+    "edit": "Edit",
+    "delete": "Delete",
+    "confirm": "Confirm",
+    "error": "An error occurred",
+    "success": "Success!",
+    "ok": "OK"
+  }
+}

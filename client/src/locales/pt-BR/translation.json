@@ -1,0 +1,103 @@
+{
+  "app": {
+    "name": "Calendário Raft",
+    "tagline": "Um calendário colaborativo para você e seus parceiros",
+    "lang": "Idioma"
+  },
+  "auth": {
+    "login": "Entrar",
+    "register": "Registrar",
+    "username": "Nome de usuário",
+    "email": "Email",
+    "password": "Senha",
+    "confirmPassword": "Confirmar Senha",
+    "loginToAccount": "Entrar na sua conta",
+    "createAccount": "Criar uma nova conta",
+    "createNewAccount": "Não tem uma conta?",
+    "alreadyHaveAccount": "Já tem uma conta?",
+    "logout": "Sair"
+  },
+  "calendar": {
+    "today": "Hoje",
+    "day": "Dia",
+    "week": "Semana",
+    "month": "Mês",
+    "addEvent": "Adicionar Evento",
+    "periods": {
+      "morning": "Manhã",
+      "afternoon": "Tarde",
+      "night": "Noite"
+    },
+    "event": {
+      "title": "Título",
+      "date": "Data",
+      "startTime": "Hora de Início",
+      "endTime": "Hora de Término",
+      "period": "Período",
+      "location": "Local",
+      "emoji": "Emoji",
+      "privacy": "Privacidade",
+      "recurrence": "Recorrência",
+      "recurrenceEndDate": "Data de Término da Recorrência",
+      "isSpecial": "Evento Especial",
+      "participants": "Participantes",
+      "save": "Salvar Evento",
+      "cancel": "Cancelar",
+      "edit": "Editar",
+      "delete": "Excluir",
+      "confirm": "Confirmar",
+      "privacyLevels": {
+        "private": "Privado (apenas eu)",
+        "partner": "Parceiro (eu e meus parceiros)",
+        "public": "Público (qualquer pessoa com o link)"
+      },
+      "recurrenceTypes": {
+        "none": "Nenhuma",
+        "daily": "Diária",
+        "weekly": "Semanal",
+        "monthly": "Mensal",
+        "custom": "Personalizada"
+      }
+    }
+  },
+  "partners": {
+    "title": "Parceiros",
+    "invite": "Convidar Parceiro",
+    "requests": "Solicitações de Parceria",
+    "list": "Meus Parceiros",
+    "invite_form": {
+      "email": "Email do Parceiro",
+      "shareAll": "Compartilhar todos os eventos",
+      "shareRaftOnly": "Compartilhar apenas eventos do Raft",
+      "send": "Enviar Convite",
+      "cancel": "Cancelar"
+    },
+    "status": {
+      "pending": "Pendente",
+      "accepted": "Aceito",
+      "rejected": "Recusado"
+    },
+    "actions": {
+      "accept": "Aceitar",
+      "reject": "Recusar",
+      "remove": "Remover Parceiro"
+    }
+  },
+  "comments": {
+    "add": "Adicionar Comentário",
+    "reply": "Responder",
+    "placeholder": "Escreva um comentário...",
+    "submit": "Enviar"
+  },
+  "common": {
+    "loading": "Carregando...",
+    "save": "Salvar",
+    "cancel": "Cancelar",
+    "edit": "Editar",
+    "delete": "Excluir",
+    "confirm": "Confirmar",
+    "error": "Ocorreu um erro",
+    "success": "Sucesso!",
+    "ok": "OK"
+  }
+}
