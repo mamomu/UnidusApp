@@ -1,16 +1,42 @@
-import { users, events, eventParticipants, comments, reactions, partners, externalCalendars, 
-  type User, type InsertUser, type Event, type InsertEvent, 
-  type EventParticipant, type InsertEventParticipant, 
-  type Comment, type InsertComment,
-  type Reaction, type InsertReaction,
-  type Partner, type InsertPartner,
-  type ExternalCalendar, type InsertExternalCalendar
+import {
+  users,
+  events,
+  eventParticipants,
+  comments,
+  reactions,
+  partners,
+  externalCalendars,
+  type User,
+  type InsertUser,
+  type Event,
+  type InsertEvent,
+  type EventParticipant,
+  type InsertEventParticipant,
+  type Comment,
+  type InsertComment,
+  type Reaction,
+  type InsertReaction,
+  type Partner,
+  type InsertPartner,
+  type ExternalCalendar,
+  type InsertExternalCalendar,
 } from "@shared/schema";
 import { db } from "./db";
-import { eq, and, inArray, between, gte, lte, desc, isNull } from "drizzle-orm";
-import session from "express-session";
+import {
+  eq,
+  and,
+  or,
+  inArray,
+  between,
+  gte,
+  lte,
+  desc,
+  isNull,
+} from "drizzle-orm";
+import session, { Store } from "express-session";
 import connectPg from "connect-pg-simple";
 import { pool } from "./db";
+import { notEqual } from "assert";
 
 const PostgresSessionStore = connectPg(session);
 
@@ -21,50 +47,63 @@ export interface IStorage {
   getUserByUsername(username: string): Promise<User | undefined>;
   getUserByEmail(email: string): Promise<User | undefined>;
   createUser(user: InsertUser): Promise<User>;
-  
+
   // Event operations
   getEvent(id: number): Promise<Event | undefined>;
   createEvent(event: InsertEvent): Promise<Event>;
-  updateEvent(id: number, data: Partial<InsertEvent>): Promise<Event | undefined>;
+  updateEvent(
+    id: number,
+    data: Partial<InsertEvent>
+  ): Promise<Event | undefined>;
   deleteEvent(id: number): Promise<boolean>;
-  getUserEvents(userId: number, startDate?: Date, endDate?: Date): Promise<Event[]>;
-  getSharedEvents(userId: number, startDate?: Date, endDate?: Date): Promise<Event[]>;
-  
+  getUserEvents(
+    userId: number,
+    startDate?: Date,
+    endDate?: Date
+  ): Promise<Event[]>;
+  getSharedEvents(
+    userId: number,
+    startDate?: Date,
+    endDate?: Date
+  ): Promise<Event[]>;
+
   // Event participants
   addEventParticipant(data: InsertEventParticipant): Promise<EventParticipant>;
   removeEventParticipant(eventId: number, userId: number): Promise<boolean>;
-  getEventParticipants(eventId: number): Promise<(EventParticipant & { user: User })[]>;
-  
+  getEventParticipants(
+    eventId: number
+  ): Promise<(EventParticipant & { user: User })[]>;
+
   // Comments
   addComment(comment: InsertComment): Promise<Comment>;
   getEventComments(eventId: number): Promise<(Comment & { user: User })[]>;
-  
+
   // Reactions
   addReaction(reaction: InsertReaction): Promise<Reaction>;
   removeReaction(eventId: number, userId: number): Promise<boolean>;
   getEventReactions(eventId: number): Promise<Reaction[]>;
-  
+
   // Partners
   getPartnerRequests(userId: number): Promise<(Partner & { partner: User })[]>;
   createPartnerRequest(data: InsertPartner): Promise<Partner>;
   updatePartnerStatus(id: number, status: string): Promise<Partner | undefined>;
   getPartners(userId: number): Promise<(Partner & { partner: User })[]>;
-  
+
   // External calendars
   addExternalCalendar(data: InsertExternalCalendar): Promise<ExternalCalendar>;
   getUserExternalCalendars(userId: number): Promise<ExternalCalendar[]>;
-  
+
   // Session store
-  sessionStore: session.SessionStore;
+  sessionStore: Store;
 }
 
 export class DatabaseStorage implements IStorage {
-  sessionStore: session.SessionStore;
-  
+  sessionStore: Store;
+
   constructor() {
-    this.sessionStore = new PostgresSessionStore({ 
-      pool, 
-      createTableIfMissing: true 
+    this.sessionStore = new PostgresSessionStore({
+      pool,
+      createTableIfMissing: true,
     });
   }
 
@@ -75,7 +114,10 @@ export class DatabaseStorage implements IStorage {
   }
 
   async getUserByUsername(username: string): Promise<User | undefined> {
-    const [user] = await db.select().from(users).where(eq(users.username, username));
+    const [user] = await db
+      .select()
+      .from(users)
+      .where(eq(users.username, username));
     return user;
   }
 
@@ -85,10 +127,7 @@ export class DatabaseStorage implements IStorage {
   }
 
   async createUser(insertUser: InsertUser): Promise<User> {
-    const [user] = await db
-      .insert(users)
-      .values(insertUser)
-      .returning();
+    const [user] = await db.insert(users).values(insertUser).returning();
     return user;
   }
 
@@ -99,14 +138,14 @@ export class DatabaseStorage implements IStorage {
   }
 
   async createEvent(event: InsertEvent): Promise<Event> {
-    const [newEvent] = await db
-      .insert(events)
-      .values(event)
-      .returning();
+    const [newEvent] = await db.insert(events).values(event).returning();
     return newEvent;
   }
 
-  async updateEvent(id: number, data: Partial<InsertEvent>): Promise<Event | undefined> {
+  async updateEvent(
+    id: number,
+    data: Partial<InsertEvent>
+  ): Promise<Event | undefined> {
     const [updatedEvent] = await db
       .update(events)
       .set(data)
@@ -120,46 +159,92 @@ export class DatabaseStorage implements IStorage {
     return true;
   }
 
-  async getUserEvents(userId: number, startDate?: Date, endDate?: Date): Promise<Event[]> {
-    let query = db.select().from(events).where(eq(events.ownerId, userId));
-    
-    if (startDate && endDate) {
-      query = query.where(between(events.date, startDate, endDate));
-    } else if (startDate) {
-      query = query.where(gte(events.date, startDate));
-    } else if (endDate) {
-      query = query.where(lte(events.date, endDate));
-    }
-    
+  async getUserEvents(
+    userId: number,
+    startDate?: Date,
+    endDate?: Date
+  ): Promise<Event[]> {
+    console.log("Fetching events for user:", userId);
+    console.log("Query conditions:", {
+      ownerCondition: eq(events.ownerId, userId),
+      partnerCondition: and(
+        eq(events.privacy, "partner"),
+        inArray(events.ownerId, await this.getPartnerIds(userId))
+      ),
+    });
+
+    const partnerIds = await this.getPartnerIds(userId);
+
+    const query = db
+      .select()
+      .from(events)
+      .where(
+        and(
+          or(
+            and(eq(events.ownerId, userId), eq(events.privacy, "private")), // Private events owned by the user
+            and(
+              eq(events.privacy, "partner"),
+              inArray(events.ownerId, partnerIds)
+            ), // Partner events visible to partners
+            eq(events.privacy, "public") // Public events visible to everyone
+          ),
+          startDate && endDate
+            ? between(
+                events.date,
+                startDate.toISOString(),
+                endDate.toISOString()
+              )
+            : undefined
+        )
+      );
+
     return await query.orderBy(events.date, events.startTime);
   }
 
-  async getSharedEvents(userId: number, startDate?: Date, endDate?: Date): Promise<Event[]> {
+  async getSharedEvents(
+    userId: number,
+    startDate?: Date,
+    endDate?: Date
+  ): Promise<Event[]> {
     const partnerIds = await this.getPartnerIds(userId);
-    
+
     if (partnerIds.length === 0) {
       return [];
     }
-    
-    let query = db.select().from(events)
+
+    let query = db
+      .select()
+      .from(events)
       .where(
         and(
           inArray(events.ownerId, partnerIds),
-          and(
-            eq(events.privacy, 'partner'),
-            eq(events.privacy, 'public')
-          )
+          and(eq(events.privacy, "partner"), eq(events.privacy, "public"))
         )
       );
-    
+
     if (startDate && endDate) {
-      query = query.where(between(events.date, startDate, endDate));
+      query = db
+        .select()
+        .from(events)
+        .where(
+          and(
+            inArray(events.ownerId, partnerIds),
+            or(eq(events.privacy, "partner"), eq(events.privacy, "public")),
+            between(events.date, startDate.toISOString(), endDate.toISOString())
+          )
+        );
     } else if (startDate) {
-      query = query.where(gte(events.date, startDate));
+      query = db
+        .select()
+        .from(events)
+        .where(gte(events.date, startDate.toISOString()));
     } else if (endDate) {
-      query = query.where(lte(events.date, endDate));
+      query = db
+        .select()
+        .from(events)
+        .where(lte(events.date, endDate.toISOString()));
     }
-    
+
     return await query.orderBy(events.date, events.startTime);
   }
 
@@ -168,18 +253,15 @@ export class DatabaseStorage implements IStorage {
     const partnerRelations = await db
       .select({ partnerId: partners.partnerId })
       .from(partners)
-      .where(
-        and(
-          eq(partners.userId, userId),
-          eq(partners.status, 'accepted')
-        )
-      );
-    
-    return partnerRelations.map(p => p.partnerId);
+      .where(and(eq(partners.userId, userId), eq(partners.status, "accepted")));
+
+    return partnerRelations.map((p) => p.partnerId);
   }
 
   // Event participants
-  async addEventParticipant(data: InsertEventParticipant): Promise<EventParticipant> {
+  async addEventParticipant(
+    data: InsertEventParticipant
+  ): Promise<EventParticipant> {
     const [participant] = await db
       .insert(eventParticipants)
       .values(data)
@@ -187,7 +269,10 @@ export class DatabaseStorage implements IStorage {
     return participant;
   }
 
-  async removeEventParticipant(eventId: number, userId: number): Promise<boolean> {
+  async removeEventParticipant(
+    eventId: number,
+    userId: number
+  ): Promise<boolean> {
     await db
       .delete(eventParticipants)
       .where(
@@ -199,7 +284,9 @@ export class DatabaseStorage implements IStorage {
     return true;
   }
 
-  async getEventParticipants(eventId: number): Promise<(EventParticipant & { user: User })[]> {
+  async getEventParticipants(
+    eventId: number
+  ): Promise<(EventParticipant & { user: User })[]> {
     return db
       .select({
         id: eventParticipants.id,
@@ -210,10 +297,12 @@ export class DatabaseStorage implements IStorage {
         user: {
           id: users.id,
           username: users.username,
+          password: users.password,
           email: users.email,
           fullName: users.fullName,
-          avatar: users.avatar
-        }
+          avatar: users.avatar,
+          createdAt: users.createdAt,
+        },
       })
       .from(eventParticipants)
       .innerJoin(users, eq(eventParticipants.userId, users.id))
@@ -222,14 +311,14 @@ export class DatabaseStorage implements IStorage {
 
   // Comments
   async addComment(comment: InsertComment): Promise<Comment> {
-    const [newComment] = await db
-      .insert(comments)
-      .values(comment)
-      .returning();
+    const result = await db.insert(comments).values(comment).returning();
+    const [newComment] = Array.isArray(result) ? result : result.rows;
     return newComment;
   }
 
-  async getEventComments(eventId: number): Promise<(Comment & { user: User })[]> {
+  async getEventComments(
+    eventId: number
+  ): Promise<(Comment & { user: User })[]> {
     return db
       .select({
         id: comments.id,
@@ -243,8 +332,8 @@ export class DatabaseStorage implements IStorage {
           username: users.username,
           email: users.email,
           fullName: users.fullName,
-          avatar: users.avatar
-        }
+          avatar: users.avatar,
+        },
       })
       .from(comments)
       .innerJoin(users, eq(comments.userId, users.id))
@@ -256,7 +345,7 @@ export class DatabaseStorage implements IStorage {
   async addReaction(reaction: InsertReaction): Promise<Reaction> {
     // First check if this user has already reacted to this event
     await this.removeReaction(reaction.eventId, reaction.userId);
-    
+
     // Then add the new reaction
     const [newReaction] = await db
       .insert(reactions)
@@ -268,24 +357,18 @@ export class DatabaseStorage implements IStorage {
   async removeReaction(eventId: number, userId: number): Promise<boolean> {
     await db
       .delete(reactions)
-      .where(
-        and(
-          eq(reactions.eventId, eventId),
-          eq(reactions.userId, userId)
-        )
-      );
+      .where(and(eq(reactions.eventId, eventId), eq(reactions.userId, userId)));
     return true;
   }
 
   async getEventReactions(eventId: number): Promise<Reaction[]> {
-    return db
-      .select()
-      .from(reactions)
-      .where(eq(reactions.eventId, eventId));
+    return db.select().from(reactions).where(eq(reactions.eventId, eventId));
   }
 
   // Partners
-  async getPartnerRequests(userId: number): Promise<(Partner & { partner: User })[]> {
+  async getPartnerRequests(
+    userId: number
+  ): Promise<(Partner & { partner: User })[]> {
     return db
       .select({
         id: partners.id,
@@ -298,30 +381,27 @@ export class DatabaseStorage implements IStorage {
         partner: {
           id: users.id,
           username: users.username,
+          password: users.password,
           email: users.email,
           fullName: users.fullName,
-          avatar: users.avatar
-        }
+          avatar: users.avatar,
+          createdAt: users.createdAt,
+        },
       })
       .from(partners)
       .innerJoin(users, eq(partners.partnerId, users.id))
-      .where(
-        and(
-          eq(partners.userId, userId),
-          eq(partners.status, 'pending')
-        )
-      );
+      .where(and(eq(partners.userId, userId), eq(partners.status, "pending")));
   }
 
   async createPartnerRequest(data: InsertPartner): Promise<Partner> {
-    const [request] = await db
-      .insert(partners)
-      .values(data)
-      .returning();
+    const [request] = await db.insert(partners).values(data).returning();
     return request;
   }
 
-  async updatePartnerStatus(id: number, status: string): Promise<Partner | undefined> {
+  async updatePartnerStatus(
+    id: number,
+    status: string
+  ): Promise<Partner | undefined> {
     const [updatedPartner] = await db
       .update(partners)
       .set({ status: status as any })
@@ -343,23 +423,22 @@ export class DatabaseStorage implements IStorage {
         partner: {
           id: users.id,
           username: users.username,
+          password: users.password,
           email: users.email,
           fullName: users.fullName,
-          avatar: users.avatar
-        }
+          avatar: users.avatar,
+          createdAt: users.createdAt,
+        },
       })
       .from(partners)
       .innerJoin(users, eq(partners.partnerId, users.id))
-      .where(
-        and(
-          eq(partners.userId, userId),
-          eq(partners.status, 'accepted')
-        )
-      );
+      .where(and(eq(partners.userId, userId), eq(partners.status, "accepted")));
   }
 
   // External calendars
-  async addExternalCalendar(data: InsertExternalCalendar): Promise<ExternalCalendar> {
+  async addExternalCalendar(
+    data: InsertExternalCalendar
+  ): Promise<ExternalCalendar> {
     const [calendar] = await db
       .insert(externalCalendars)
       .values(data)
@@ -372,6 +451,67 @@ export class DatabaseStorage implements IStorage {
       .select()
       .from(externalCalendars)
       .where(eq(externalCalendars.userId, userId));
+  }
+
+  async isPartnerWithAccess(userId: number, eventId: number): Promise<boolean> {
+    const partnerIds = await this.getPartnerIds(userId);
+    const [event] = await db
+      .select()
+      .from(events)
+      .where(
+        and(
+          eq(events.id, eventId),
+          inArray(events.ownerId, partnerIds),
+          eq(events.privacy, "partner")
+        )
+      );
+
+    return !!event;
+  }
+
+  async getEventWithParticipants(eventId: number): Promise<
+    | {
+        event: Event;
+        owner: User;
+        participants: (EventParticipant & { user: User })[];
+      }
+    | undefined
+  > {
+    const [event] = await db
+      .select()
+      .from(events)
+      .where(eq(events.id, eventId));
+
+    if (!event) return undefined;
+
+    const [owner] = await db
+      .select()
+      .from(users)
+      .where(eq(users.id, event.ownerId));
+
+    const participants = await this.getEventParticipants(eventId);
+
+    return { event, owner, participants };
+  }
+
+  async addPartnerToSharedEvents(
+    userId: number,
+    partnerId: number
+  ): Promise<void> {
+    const sharedEvents = await db
+      .select()
+      .from(events)
+      .where(and(eq(events.ownerId, userId), eq(events.privacy, "partner")));
+
+    await Promise.all(
+      sharedEvents.map((event) =>
+        db.insert(eventParticipants).values({
+          eventId: event.id,
+          userId: partnerId,
+          permission: "view",
+        })
+      )
+    );
   }
 }
 

@@ -1,18 +1,20 @@
 import { useState } from "react";
-import { 
-  Dialog, 
-  DialogContent, 
-  DialogHeader, 
-  DialogTitle, 
-  DialogFooter 
+import {
+  Dialog,
+  DialogTrigger,
+  DialogPortal,
+  DialogOverlay,
+  DialogContent,
+  DialogTitle,
+  DialogDescription,
 } from "@/components/ui/dialog";
-import { 
-  Form, 
-  FormControl, 
-  FormField, 
-  FormItem, 
-  FormLabel, 
-  FormMessage 
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
 } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -30,6 +32,7 @@ const inviteSchema = z.object({
   partnerEmail: z.string().email("Must be a valid email address"),
   shareAll: z.boolean().default(true),
   shareRaftOnly: z.boolean().default(false),
+  permission: z.string().optional(),
 });
 
 type InviteValues = z.infer<typeof inviteSchema>;
@@ -39,10 +42,15 @@ interface InvitePartnerModalProps {
   onClose: () => void;
 }
 
-export default function InvitePartnerModal({ isOpen, onClose }: InvitePartnerModalProps) {
+export default function InvitePartnerModal({
+  isOpen,
+  onClose,
+}: InvitePartnerModalProps) {
   const { toast } = useToast();
   const queryClient = useQueryClient();
-  const [inviteMethod, setInviteMethod] = useState<'email' | 'sms' | 'link' | 'qrcode'>('email');
+  const [inviteMethod, setInviteMethod] = useState<
+    "email" | "sms" | "link" | "qrcode"
+  >("email");
 
   // Form setup
   const form = useForm<InviteValues>({
@@ -51,7 +59,8 @@ export default function InvitePartnerModal({ isOpen, onClose }: InvitePartnerMod
       partnerEmail: "",
       shareAll: true,
       shareRaftOnly: false,
-    }
+      permission: "view",
+    },
   });
 
   // Invite partner mutation
@@ -61,7 +70,7 @@ export default function InvitePartnerModal({ isOpen, onClose }: InvitePartnerMod
       return res.json();
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['/api/partners'] });
+      queryClient.invalidateQueries({ queryKey: ["/api/partners"] });
       toast({
         title: "Invitation sent",
         description: "Your partner invitation has been sent successfully.",
@@ -78,147 +87,220 @@ export default function InvitePartnerModal({ isOpen, onClose }: InvitePartnerMod
   });
 
   const onSubmit = (values: InviteValues) => {
-    invitePartnerMutation.mutate(values);
+    invitePartnerMutation.mutate({
+      ...values,
+      permission: values.permission || "view", // Default to view permission
+    });
   };
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-md">
-        <DialogHeader>
-          <DialogTitle>Invite Partner</DialogTitle>
-        </DialogHeader>
+      <DialogPortal>
+        <DialogOverlay className="fixed inset-0 bg-black/50" />
+        <DialogContent className="fixed inset-0 m-auto max-w-md bg-white p-6 rounded shadow">
+          <DialogTitle className="text-xl font-bold">
+            Invite Partner
+          </DialogTitle>
+          <DialogDescription className="text-sm text-gray-500">
+            Share your calendar with a partner to collaborate on events and
+            tasks.
+          </DialogDescription>
+          <p className="text-neutral-600 mb-6">
+            Share your calendar with a partner to collaborate on events and
+            tasks.
+          </p>
 
-        <p className="text-neutral-600 mb-6">Share your calendar with a partner to collaborate on events and tasks.</p>
-        
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-            {inviteMethod === 'email' && (
-              <FormField
-                control={form.control}
-                name="partnerEmail"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Email</FormLabel>
-                    <FormControl>
-                      <Input placeholder="Enter email address" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            )}
-            
-            <FormLabel>Or share via</FormLabel>
-            <div className="grid grid-cols-3 gap-3">
-              <Button
-                type="button"
-                variant={inviteMethod === 'sms' ? 'default' : 'outline'}
-                className="p-2 flex flex-col items-center h-auto"
-                onClick={() => setInviteMethod('sms')}
-              >
-                <MessageCircle className="text-xl mb-1" size={24} />
-                <span className="text-xs">SMS</span>
-              </Button>
-              <Button
-                type="button"
-                variant={inviteMethod === 'link' ? 'default' : 'outline'}
-                className="p-2 flex flex-col items-center h-auto"
-                onClick={() => setInviteMethod('link')}
-              >
-                <LinkIcon className="text-xl mb-1" size={24} />
-                <span className="text-xs">Link</span>
-              </Button>
-              <Button
-                type="button"
-                variant={inviteMethod === 'qrcode' ? 'default' : 'outline'}
-                className="p-2 flex flex-col items-center h-auto"
-                onClick={() => setInviteMethod('qrcode')}
-              >
-                <QrCode className="text-xl mb-1" size={24} />
-                <span className="text-xs">QR Code</span>
-              </Button>
-            </div>
-            
-            {inviteMethod === 'sms' && (
-              <FormItem>
-                <FormLabel>Phone Number</FormLabel>
-                <FormControl>
-                  <Input placeholder="Enter phone number" />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-            
-            {inviteMethod === 'link' && (
-              <FormItem>
-                <FormLabel>Invitation Link</FormLabel>
-                <div className="flex">
-                  <Input 
-                    value="https://raft-calendar.app/invite/abc123" 
-                    readOnly 
-                    className="rounded-r-none"
-                  />
-                  <Button className="rounded-l-none">Copy</Button>
-                </div>
-              </FormItem>
-            )}
-            
-            {inviteMethod === 'qrcode' && (
-              <div className="flex justify-center p-4">
-                <div className="w-40 h-40 border-2 border-dashed border-neutral-300 rounded-lg flex items-center justify-center text-neutral-400">
-                  QR Code Placeholder
-                </div>
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+              {inviteMethod === "email" && (
+                <FormField
+                  control={form.control}
+                  name="partnerEmail"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Email</FormLabel>
+                      <FormControl>
+                        <Input placeholder="Enter email address" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              )}
+
+              <FormLabel>Or share via</FormLabel>
+              <div className="grid grid-cols-3 gap-3">
+                <Button
+                  type="button"
+                  variant={inviteMethod === "sms" ? "default" : "outline"}
+                  className="p-2 flex flex-col items-center h-auto"
+                  onClick={() => setInviteMethod("sms")}
+                >
+                  <MessageCircle className="text-xl mb-1" size={24} />
+                  <span className="text-xs">SMS</span>
+                </Button>
+                <Button
+                  type="button"
+                  variant={inviteMethod === "link" ? "default" : "outline"}
+                  className="p-2 flex flex-col items-center h-auto"
+                  onClick={() => setInviteMethod("link")}
+                >
+                  <LinkIcon className="text-xl mb-1" size={24} />
+                  <span className="text-xs">Link</span>
+                </Button>
+                <Button
+                  type="button"
+                  variant={inviteMethod === "qrcode" ? "default" : "outline"}
+                  className="p-2 flex flex-col items-center h-auto"
+                  onClick={() => setInviteMethod("qrcode")}
+                >
+                  <QrCode className="text-xl mb-1" size={24} />
+                  <span className="text-xs">QR Code</span>
+                </Button>
               </div>
-            )}
-            
-            <div className="space-y-2">
-              <FormLabel>Permission level</FormLabel>
-              
-              <RadioGroup 
-                defaultValue="all" 
+
+              {inviteMethod === "sms" && (
+                <FormItem>
+                  <FormLabel>Phone Number</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Enter phone number" />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+
+              {inviteMethod === "link" && (
+                <FormItem>
+                  <FormLabel>Invitation Link</FormLabel>
+                  <div className="flex">
+                    <Input
+                      value="https://raft-calendar.app/invite/abc123"
+                      readOnly
+                      className="rounded-r-none"
+                    />
+                    <Button className="rounded-l-none">Copy</Button>
+                  </div>
+                </FormItem>
+              )}
+
+              {inviteMethod === "qrcode" && (
+                <div className="flex justify-center p-4">
+                  <div className="w-40 h-40 border-2 border-dashed border-neutral-300 rounded-lg flex items-center justify-center text-neutral-400">
+                    QR Code Placeholder
+                  </div>
+                </div>
+              )}
+
+              <div className="space-y-2">
+                <FormLabel>Permission level</FormLabel>
+
+                <RadioGroup
+                  defaultValue="all"
+                  className="space-y-2"
+                  onValueChange={(value) => {
+                    form.setValue("shareAll", value === "all");
+                    form.setValue("shareRaftOnly", value === "raft");
+                  }}
+                >
+                  <div className="flex items-center p-2 border rounded-lg hover:bg-neutral-50 cursor-pointer">
+                    <RadioGroupItem value="all" id="all" className="mr-3" />
+                    <div>
+                      <label
+                        htmlFor="all"
+                        className="block font-medium text-sm"
+                      >
+                        All events
+                      </label>
+                      <span className="text-xs text-neutral-500">
+                        Partner can see all your calendar events
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center p-2 border rounded-lg hover:bg-neutral-50 cursor-pointer">
+                    <RadioGroupItem value="raft" id="raft" className="mr-3" />
+                    <div>
+                      <label
+                        htmlFor="raft"
+                        className="block font-medium text-sm"
+                      >
+                        Only Raft events
+                      </label>
+                      <span className="text-xs text-neutral-500">
+                        Only events created in Raft will be shared
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center p-2 border rounded-lg hover:bg-neutral-50 cursor-pointer">
+                    <RadioGroupItem
+                      value="selected"
+                      id="selected"
+                      className="mr-3"
+                    />
+                    <div>
+                      <label
+                        htmlFor="selected"
+                        className="block font-medium text-sm"
+                      >
+                        Selected calendars
+                      </label>
+                      <span className="text-xs text-neutral-500">
+                        Choose specific calendars to share
+                      </span>
+                    </div>
+                  </div>
+                </RadioGroup>
+              </div>
+
+              <FormLabel>Permission Level</FormLabel>
+              <RadioGroup
+                defaultValue="view"
                 className="space-y-2"
-                onValueChange={(value) => {
-                  form.setValue('shareAll', value === 'all');
-                  form.setValue('shareRaftOnly', value === 'raft');
-                }}
+                onValueChange={(value) => form.setValue("permission", value)}
               >
                 <div className="flex items-center p-2 border rounded-lg hover:bg-neutral-50 cursor-pointer">
-                  <RadioGroupItem value="all" id="all" className="mr-3" />
+                  <RadioGroupItem value="view" id="view" className="mr-3" />
                   <div>
-                    <label htmlFor="all" className="block font-medium text-sm">All events</label>
-                    <span className="text-xs text-neutral-500">Partner can see all your calendar events</span>
+                    <label htmlFor="view" className="block font-medium text-sm">
+                      View Only
+                    </label>
+                    <span className="text-xs text-neutral-500">
+                      Partner can only view events
+                    </span>
                   </div>
                 </div>
-                
+
                 <div className="flex items-center p-2 border rounded-lg hover:bg-neutral-50 cursor-pointer">
-                  <RadioGroupItem value="raft" id="raft" className="mr-3" />
+                  <RadioGroupItem value="edit" id="edit" className="mr-3" />
                   <div>
-                    <label htmlFor="raft" className="block font-medium text-sm">Only Raft events</label>
-                    <span className="text-xs text-neutral-500">Only events created in Raft will be shared</span>
-                  </div>
-                </div>
-                
-                <div className="flex items-center p-2 border rounded-lg hover:bg-neutral-50 cursor-pointer">
-                  <RadioGroupItem value="selected" id="selected" className="mr-3" />
-                  <div>
-                    <label htmlFor="selected" className="block font-medium text-sm">Selected calendars</label>
-                    <span className="text-xs text-neutral-500">Choose specific calendars to share</span>
+                    <label htmlFor="edit" className="block font-medium text-sm">
+                      Edit
+                    </label>
+                    <span className="text-xs text-neutral-500">
+                      Partner can edit events
+                    </span>
                   </div>
                 </div>
               </RadioGroup>
-            </div>
-            
-            <DialogFooter className="mt-6">
-              <Button 
-                type="submit" 
-                disabled={invitePartnerMutation.isPending || (inviteMethod === 'email' && !form.watch('partnerEmail'))}
-              >
-                {invitePartnerMutation.isPending ? 'Sending...' : 'Send Invitation'}
-              </Button>
-            </DialogFooter>
-          </form>
-        </Form>
-      </DialogContent>
+
+              <div className="mt-6 flex justify-end">
+                <Button
+                  type="submit"
+                  disabled={
+                    invitePartnerMutation.isPending ||
+                    (inviteMethod === "email" && !form.watch("partnerEmail"))
+                  }
+                >
+                  {invitePartnerMutation.isPending
+                    ? "Sending..."
+                    : "Send Invitation"}
+                </Button>
+              </div>
+            </form>
+          </Form>
+        </DialogContent>
+      </DialogPortal>
     </Dialog>
   );
 }

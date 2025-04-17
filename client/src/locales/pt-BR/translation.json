@@ -1,9 +1,12 @@
-
 {
   "app": {
     "name": "Calendário Raft",
     "tagline": "Um calendário colaborativo para você e seus parceiros",
-    "lang": "Idioma"
+    "lang": "Idioma",
+    "tasks": "Tarefas",
+    "settings": "Configurações",
+    "calendar": "Calendário",
+    "partners": "Conexões"
   },
   "auth": {
     "login": "Entrar",
@@ -57,7 +60,7 @@
     "day": "Dia",
     "week": "Semana",
     "month": "Mês",
-    "addEvent": "Adicionar Evento",
+    "addEvent": "Novo Evento",
     "periods": {
       "morning": "Manhã",
       "afternoon": "Tarde",
@@ -93,6 +96,15 @@
         "monthly": "Mensal",
         "custom": "Personalizada"
       }
+    },
+    "viewModes": {
+      "day": "Dia",
+      "week": "Semana",
+      "month": "Mês"
+    },
+    "dateFormats": {
+      "day": "d 'de' MMM",
+      "month": "MMMM 'de' yyyy"
     }
   },
   "partners": {
@@ -133,6 +145,56 @@
     "confirm": "Confirmar",
     "error": "Ocorreu um erro",
     "success": "Sucesso!",
+    "closePerson": "Pessoa Próxima",
     "ok": "OK"
+  },
+  "eventForm": {
+    "createTitle": "Criar Evento",
+    "editTitle": "Editar Evento",
+    "titleLabel": "Nome do evento",
+    "titlePlaceholder": "Adicionar título",
+    "privacyLabel": "Privacidade",
+    "privacyPrivate": "Privado",
+    "privacyPartner": "Com parceiro",
+    "privacyPublic": "Público",
+    "cancelButton": "Cancelar",
+    "saveButton": "Salvar",
+    "updateButton": "Atualizar",
+    "savingButton": "Salvando...",
+    "successTitle": "Evento criado",
+    "successDescription": "Seu evento foi criado com sucesso.",
+    "updateSuccessTitle": "Evento atualizado",
+    "updateSuccessDescription": "Seu evento foi atualizado com sucesso.",
+    "errorTitle": "Erro",
+    "errorDescription": "Ocorreu um erro ao processar sua solicitação.",
+    "dateLabel": "Data",
+    "periodLabel": "Período do dia",
+    "periodPlaceholder": "Selecione o período",
+    "periodMorning": "Manhã",
+    "periodAfternoon": "Tarde",
+    "periodNight": "Noite",
+    "startTimeLabel": "Hora de início",
+    "endTimeLabel": "Hora de término",
+    "locationLabel": "Local",
+    "recurrenceLabel": "Recorrência",
+    "recurrenceNone": "Nenhuma",
+    "recurrenceDaily": "Diária",
+    "recurrenceWeekly": "Semanal",
+    "recurrenceMonthly": "Mensal",
+    "recurrenceCustom": "Personalizada",
+    "recurrenceEndDateLabel": "Data de término da recorrência",
+    "emojiLabel": "Emoji",
+    "isSpecialLabel": "Evento especial",
+    "addPartnerLabel": "Adicionar parceiro",
+    "partnersLabel": "Parceiros",
+    "selectPartnerPlaceholder": "Selecione um parceiro",
+    "shareWithLabel": "Compartilhar com",
+    "partnerLabel": "Parceiro",
+    "permissionPlaceholder": "Selecione a permissão",
+    "permissionView": "Visualizar",
+    "permissionEdit": "Editar",
+    "addPeopleButton": "Adicionar Pessoas",
+    "locationPlaceholder": "Digite a localização",
+    "recurrencePlaceholder": "Selecione a recorrência"
   }
 }

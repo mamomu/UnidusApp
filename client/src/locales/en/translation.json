@@ -2,8 +2,13 @@
   "app": {
     "name": "Raft Calendar",
     "tagline": "A collaborative calendar for you and your partners",
-    "lang": "Language"
+    "lang": "Language",
+    "tasks": "Tasks",
+    "settings": "Settings",
+    "calendar": "Calendar",
+    "partners": "Partners"
   },
+
   "auth": {
     "login": "Log in",
     "register": "Register",
@@ -92,6 +97,15 @@
         "monthly": "Monthly",
         "custom": "Custom"
       }
+    },
+    "viewModes": {
+      "day": "Day",
+      "week": "Week",
+      "month": "Month"
+    },
+    "dateFormats": {
+      "day": "MMM d",
+      "month": "MMM yyyy"
     }
   },
   "partners": {
@@ -133,5 +147,46 @@
     "error": "An error occurred",
     "success": "Success!",
     "ok": "OK"
+  },
+  "eventForm": {
+    "createTitle": "Create Event",
+    "editTitle": "Edit Event",
+    "titleLabel": "Event Name",
+    "titlePlaceholder": "Add title",
+    "privacyLabel": "Privacy",
+    "privacyPrivate": "Private",
+    "privacyPartner": "With partner",
+    "privacyPublic": "Public",
+    "cancelButton": "Cancel",
+    "saveButton": "Save",
+    "updateButton": "Update",
+    "savingButton": "Saving...",
+    "successTitle": "Event Created",
+    "successDescription": "Your event was successfully created.",
+    "updateSuccessTitle": "Event Updated",
+    "updateSuccessDescription": "Your event was successfully updated.",
+    "errorTitle": "Error",
+    "errorDescription": "An error occurred while processing your request.",
+    "dateLabel": "Date",
+    "periodLabel": "Time of Day",
+    "periodPlaceholder": "Select the period",
+    "periodMorning": "Morning",
+    "periodAfternoon": "Afternoon",
+    "periodNight": "Night",
+    "startTimeLabel": "Start Time",
+    "endTimeLabel": "End Time",
+    "locationLabel": "Location",
+    "recurrenceLabel": "Recurrence",
+    "recurrenceNone": "None",
+    "recurrenceDaily": "Daily",
+    "recurrenceWeekly": "Weekly",
+    "recurrenceMonthly": "Monthly",
+    "recurrenceCustom": "Custom",
+    "recurrenceEndDateLabel": "Recurrence End Date",
+    "emojiLabel": "Emoji",
+    "isSpecialLabel": "Special Event",
+    "addPartnerLabel": "Add Partner",
+    "partnersLabel": "Partners",
+    "selectPartnerPlaceholder": "Select a partner"
   }
 }
